@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>新闻录入</title>
+	<style>
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	.warp{
+		width: 500px;
+		height: 700px;
+		margin: 0 auto;
+		border: 1px solid blue;
+	}
+	h2{
+		
+		margin-left: 160px
+	}
+	input{
+		width: 150px;
+		height: 30px;
+		margin-top: 20px;
+	}
+	li{
+		width: 100px;
+		height: 20px;
+	}
+
+	</style>
+</head>
+<body>
+	<div class="warp">
+	<h2 >新闻录入界面</h2>
+      标题：<input type="text" id="names"><br>
+
+      作者：<input type="text" id="textname"><br><br>
+
+      内容：<input type="text" id="text">
+      
+
+      </textarea>
+
+      <button id="btn">录入</button>
+
+
+	</div>
+</body>
+<script>
+
+// over()
+// 	function over(){
+// 		ajax({
+// 			type:"post",
+// 			url:"http://localhost:8000/user/login2",
+// 			success:function(da){
+// 				var arr = eval('('+da+')')
+// //				console.log()
+//                 var str = ''
+// 				for(var i=0;i<arr.length;i++){
+// 					str+=`<a href="http://localhost:8000/user/slogin2t?uid=${arr[i].uid}">
+// 					<li>${arr[i].textname}</li>
+// 					<li>${arr[i].name}</li>
+// 					<ol>${arr[i].text}</ol>
+
+
+// 					</a>
+// 					    `
+// 				}
+// 				ul.innerHTML = str
+// 			},
+// 			error:function(da){
+// 				console.log(da)
+// 			}
+// 		  })
+// 	}
+    
+
+
+ajax({
+        url:'http://localhost:8000/user/login2',
+        type:'post',
+        success:function(da){
+            console.log(da);var json=eval(da);
+            var str='';
+            for(var i= 0;i<json.length;i++){
+                str+=`<div id='box2'><h2>标题：${json[i].name}</h2><p>作者：${json[i].textname}</p><div class='c'>内容：${json[i].text}</div><button id='btn' onclick='btn()'>删除</button><button id='btn1'>分享</button></div>`
+//               function btn(){
+//                    var id=this.attr('da-id');
+//                    var _this=this;
+//                    ajax({
+//                        url:'http://localhost:8000/user/shan',
+//                        type:'post',
+//                        data:{'id':id},
+//                        success:function(da){
+//                            console.log(da)
+//                            window.location.href='http://localhost:8000/list.html'
+//                        },
+//                        error:function(){
+//                        }
+//                    })
+//                }
+            }
+            box.innerHTML=str;
+        },
+        error:function(){
+        }
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+btn.onclick = function () {
+        ajax({
+            url: 'http://localhost:8000/user/login2',
+            type: 'post',
+            data: {
+                name: names.value,    
+                textname: textname.value,
+                text:text.value
+              
+            },
+            success: function (da) {
+                console.log(da)
+
+            },
+            error: function () {
+
+            }
+        })
+    }
+
+
+
+
+    function ajax(req) {
+//	console.log(req.data)
+        if (window.XMLHttpRequest) {
+            var ajax = new XMLHttpRequest()
+        } else {
+            var ajax = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        if (req.type == 'get') {
+            ajax.open('get', req.url + '?' + strdata(req.data), true)
+            ajax.send()
+        } else {
+            ajax.open('post', req.url, true)
+            ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+            ajax.send(strdata(req.data))
+        }
+        ajax.onreadystatechange = function () {
+            if (ajax.readyState == 4) {
+                if (ajax.status >= 200 && ajax.status < 300 || ajax.status == 304) {
+                    req.success(ajax.responseText)
+//					console.log(ajax.responseText)
+                } else {
+                    req.error(ajax.status)
+                }
+
+            }
+        }
+
+        function strdata(da) {
+            var arr = []
+            for (var i in da) {
+                arr.push(i + '=' + da[i])
+            }
+            var strurl = arr.join('&')
+            return strurl
+        }
+    }
+</script>
+
+</html>
